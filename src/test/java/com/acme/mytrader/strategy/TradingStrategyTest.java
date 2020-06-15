@@ -1,5 +1,7 @@
 package com.acme.mytrader.strategy;
 
+import static junit.framework.TestCase.assertNull;
+import org.junit.After;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -16,14 +18,14 @@ import com.acme.mytrader.price.PriceSourceImpl;
 public class TradingStrategyTest {
 	
 	private ExecutionService executionService;
-	private PriceListener priceListener;
+	private PriceListenerImpl priceListener;
 	private PriceSource priceSource;
 	private TradingStrategy tradingStrategy;
 	
 	@Before
-	public void setup() {		
+	public void setup() {
 		executionService = new ExecutionServiceImpl();
-		priceListener = new PriceListenerImpl();
+        priceListener = new PriceListenerImpl();
 		priceSource = new PriceSourceImpl(priceListener);
 		tradingStrategy = new TradingStrategy(executionService, priceListener, priceSource);
 	}
@@ -54,4 +56,14 @@ public class TradingStrategyTest {
     public void testNotSellStrategy() {
     	assertEquals("Sell Amazon stocks fail", tradingStrategy.sellingStrategy("Amazon", 150d, 10));
     }
+
+
+    @After // tearDown()
+    public void after() throws Exception {
+        System.out.println("Running: tearDown");
+        executionService = null;
+        assertNull(executionService);
+    }
+
+
 }

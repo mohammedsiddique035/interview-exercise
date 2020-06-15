@@ -15,8 +15,16 @@ public class ExecutionServiceImpl implements ExecutionService {
 	@Override
 	public void buy(String security, double price, int volume) {
 		// TODO Auto-generated method stub
-        executionServiceListDb.put(security,executionServiceListDb.get(security)-volume);//when stocks are purchased available stocks decreases
-		System.out.println(volume+" volume " +security+" stocks bye on market price of each " +price );
+        if(executionServiceListDb.get(security)-volume<0){
+            try {
+                throw new Exception("can not purchase the as the volume on the stock are limited");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            executionServiceListDb.put(security, executionServiceListDb.get(security) - volume);//when stocks are purchased available stocks decreases
+            System.out.println(volume + " volume " + security + " stocks bye on market price of each " + price);
+        }
 
 	}
 
